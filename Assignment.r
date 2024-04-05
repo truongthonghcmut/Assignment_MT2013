@@ -131,6 +131,31 @@ dataCPU <- dataCPU %>% group_by(Vertical_Segment) %>% fill(`Recommended_Customer
 # Check to make sure that there is no other NA data
 print(apply(is.na(dataCPU), 2, sum))
 
-print(summary(dataCPU))
-#-------------------------------
+# Create "dataNumeric" from dataCPU which only have numeric data
+dataNumeric <- subset(dataCPU, select = -c(Product_Collection, Vertical_Segment, Processor_Number, Status, Type_Of_Cache, Instruction_Set))
 
+average <- apply(dataNumeric, 2, mean)
+variance <- apply(dataNumeric, 2, var)
+std_deviation <- apply(dataNumeric, 2, sd)
+min_value <- apply(dataNumeric, 2, min)
+q1 <- apply(dataNumeric, 2, quantile, probs = 0.25)
+med <- apply(dataNumeric, 2, median)
+q3 <- apply(dataNumeric, 2, quantile, probs = 0.75)
+max_value <- apply(dataNumeric, 2, max)
+
+data.frame(average, variance, std_deviation, min_value, q1, med, q3, max_value)
+
+print(length(dataCPU$Product_Collection))
+table(dataCPU$Product_Collection)
+
+table(dataCPU$Vertical_Segment)
+
+print(length(dataCPU$Processor_Number))
+print(length(unique(dataCPU$Processor_Number)))
+
+table(dataCPU$Status)
+
+table(dataCPU$Type_Of_Cache)
+
+table(dataCPU$Instruction_Set)
+#-------------------------------
