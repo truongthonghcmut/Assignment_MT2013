@@ -1,5 +1,6 @@
 # Import needed library
 library(datasets)
+library(graphics)
 library(dplyr)
 library(tidyr)
 library(zoo)
@@ -158,4 +159,24 @@ table(dataCPU$Status)
 table(dataCPU$Type_Of_Cache)
 
 table(dataCPU$Instruction_Set)
+
+hist(dataCPU$`Recommended_Customer_Price(USD)`, main = "Recommended Customer Price(USD)", xlab = "Price(USD)", ylab = "Number of CPU", 
+     col = "purple", border = "black", xlim = c(0, 7000), ylim = c(0, 700), breaks = 50)
+
+pairs(dataCPU$`Recommended_Customer_Price(USD)` ~ dataCPU$`Lithography(nm)`, col = "red", pch = 20, labels = c("Recommend Customer Price", "Lithography"), 
+      main = "Correlation chart between Recommended Price and Lithography")
+
+pairs(dataCPU$`Recommended_Customer_Price(USD)` ~ dataCPU$nb_of_Cores, col = "green", pch = 20, labels = c("Recommend Customer Price", "Number of Cores"), 
+      main = "Correlation chart between Recommended Price and Number of Cores")
+
+pairs(dataCPU$`Recommended_Customer_Price(USD)` ~ dataCPU$nb_of_Threads, col = "black", pch = 20, labels = c("Recommend Customer Price", "Number of Threads"), 
+      main = "Correlation chart between Recommended Price and Number of Threads")
+
+pairs(dataCPU$`Recommended_Customer_Price(USD)` ~ dataCPU$`Max_Memory_Size(GB)`, col = "blue", pch = 20, labels = c("Recommend Customer Price", "Max Memory Size"), 
+      main = "Correlation chart between Recommended Price and Max Memory Size")
+
+pairs(dataCPU$`Recommended_Customer_Price(USD)` ~ dataCPU$`Cache_Size(MB)`, col = "yellow", pch = 20, labels = c("Recommend Customer Price", "Cache Size"), 
+      main = "Correlation chart between Recommended Price and Cache Size")
+
+
 #-------------------------------
