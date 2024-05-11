@@ -178,5 +178,110 @@ pairs(dataCPU$`Recommended_Customer_Price(USD)` ~ dataCPU$`Max_Memory_Size(GB)`,
 pairs(dataCPU$`Recommended_Customer_Price(USD)` ~ dataCPU$`Cache_Size(MB)`, col = "yellow", pch = 20, labels = c("Recommend Customer Price", "Cache Size"), 
       main = "Correlation chart between Recommended Price and Cache Size")
 
+# ---------------- ANOVA ----------------
+if (!require(nortest)) install.packages("nortest")
+library(nortest)
 
-#-------------------------------
+if (!require(car)) install.packages("car")
+library(car)
+
+# Test 1: Normality of residuals for Mobile CPUs
+mobileCPU <- subset(dataCPU, dataCPU$Vertical_Segment == "Mobile")
+qqnorm(mobileCPU$`Processor_Base_Frequency(MHz)`)
+qqline(mobileCPU$`Processor_Base_Frequency(MHz)`)
+print(shapiro.test(mobileCPU$`Processor_Base_Frequency(MHz)`))
+
+# Test 1: Normality of residuals for Desktop CPUs
+desktopCPU <- subset(dataCPU, dataCPU$Vertical_Segment == "Desktop")
+qqnorm(desktopCPU$`Processor_Base_Frequency(MHz)`)
+qqline(desktopCPU$`Processor_Base_Frequency(MHz)`)
+print(shapiro.test(desktopCPU$`Processor_Base_Frequency(MHz)`))
+
+# Test 1: Normality of residuals for Server CPUs
+serverCPU <- subset(dataCPU, dataCPU$Vertical_Segment == "Server")
+qqnorm(serverCPU$`Processor_Base_Frequency(MHz)`)
+qqline(serverCPU$`Processor_Base_Frequency(MHz)`)
+print(shapiro.test(serverCPU$`Processor_Base_Frequency(MHz)`))
+
+# Test 1: Normality of residuals for Embedded CPUs
+embeddedCPU <- subset(dataCPU, dataCPU$Vertical_Segment == "Embedded")
+qqnorm(embeddedCPU$`Processor_Base_Frequency(MHz)`)
+qqline(embeddedCPU$`Processor_Base_Frequency(MHz)`)
+print(shapiro.test(embeddedCPU$`Processor_Base_Frequency(MHz)`))
+
+# Test 2: Homogeneity of variances
+levent_test <- leveneTest(dataCPU$`Processor_Base_Frequency(MHz)` ~ as.factor(dataCPU$Vertical_Segment))
+print(levent_test)
+
+anova_model <- aov(`Processor_Base_Frequency(MHz)` ~ Vertical_Segment, data = dataCPU)
+summary(anova_model)
+
+TukeyHSD(anova_model)
+plot(TukeyHSD(anova_model))
+# larger mean means that the Frequen on the specific segment is higher.
+
+# ---------------- END OF ANOVA ----------------
+
+# # # Get names of columns with less than 4 unique elements
+# # filtered_column_names <- names(dataCPU)[sapply(dataCPU, function(x) length(unique(x)) <= 6)]
+
+
+# # Print the column names
+
+
+# # print(filtered_column_names)
+# # for (col_name in filtered_column_names) {
+# #   # Compute ANOVA
+# #   anova_model <- aov(as.formula(paste("`Max_Memory_Bandwidth(GB/s)` ~", col_name)), data = dataCPU)
+  
+# #   # Print the summary of the model
+# #   print(summary(anova_model))
+# # }
+# # anova_model <- aov(`Processor_Base_Frequency(MHz)` ~ Vertical_Segment, data = dataCPU)
+# # # Assumption 1: Normality of residuals
+# # av_residual <- rstandard(aov(`Processor_Base_Frequency(MHz)` ~ nb_of_Cores*Vertical_Segment, data = dataCPU))
+# # ad.test(av_residual)
+
+# # # Assumption 2
+# # levene_test <- leveneTest(`Processor_Base_Frequency(MHz)` ~ Vertical_Segment * as.factor(nb_of_Cores), data = dataCPU)
+# # print(levene_test)
+
+# # # Compute ANOVA
+# # model_2 <- aov(`Processor_Base_Frequency(MHz)` ~ nb_of_Cores * Vertical_Segment, data = dataCPU)
+# # summary(model_2)
+
+
+
+
+
+# # Install and load the necessary packages
+# if (!require(glmnet)) install.packages("glmnet")
+# library(glmnet)
+# # Multiple Linear Regression
+# modelR2 <- lm(`Processor_Base_Frequency(MHz)` ~ nb_of_Cores + nb_of_Threads + `Cache_Size(MB)` + `Max_Memory_Size(GB)`, data = dataCPU)
+# summary(modelR2)
+
+# # Check for multicollinearity
+# vif_values2 <- car::vif(modelR2)
+# formatted_output2 <- paste(names(vif_values2), ": ", vif_values2, sep = "")
+# formatted_output2
+
+# # Confidence intervals for regression coefficients
+# confint(modelR2)
+
+# # Diagnostic plots
+# plot(modelR2)
+
+# # Ridge Regression
+# # Find optimal lambda
+# xv <- dataCPU[, c("Lithography(nm)", "nb_of_Threads", "nb_of_Cores", "Launch_Date", "Max_Memory_Size(GB)", "Max_Memory_Bandwidth(GB/s)", "Cache_Size(MB)", "Lithography(nm)", "TDP(Watts)", "Instruction_Set")]
+# yv <- dataCPU$`Processor_Base_Frequency(MHz)`
+# cv_model <- cv.glmnet(x = as.matrix(xv), y = yv, alpha = 0)
+# best_lambda <- cv_model$lambda.min
+# best_lambda
+
+# # Plot MSE vs lambdaw
+# # plot(cv_model)
+
+# qqnorm(mobileCPU$`Processor_Base_Frequency(MHz)`)
+# qqline(mobileCPU$`Processor_Base_Frequency(MHz)`)
