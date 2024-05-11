@@ -161,8 +161,6 @@ Server-Mobile      467.3515   373.57136  561.1317 0.0000000
 
 <p align="center"> Biểu đồ Tukey HSD </p>
 
-<br/><br/>
-
 Kết quả cho thấy có sự khác biệt đáng kể về giá trị trung bình của Processor Base Frequency giữa các nhóm CPU. Dựa vào giá trị diff của các cặp, ta nhận xét: giá trị trung bình của Embedded CPUs thấp hơn Desktop CPUs 1008.44 MHz, Mobile CPUs thấp hơn Desktop CPUs 907.32 MHz, Server CPUs thấp hơn Desktop CPUs 439.97 MHz. Trong khi đó, giá trị trung bình của Server CPUs cao hơn Embedded CPUs 568.47 MHz và Mobile CPUs 467.35 MHz.
 
 Vậy có thể thấy Desktop CPUs có giá trị trung bình Processor Base Frequency cao nhất, tiếp theo là Server CPUs, Mobile CPUs và cuối cùng là Embedded CPUs.
