@@ -86,7 +86,7 @@ data:  mobileCPU$`Processor_Base_Frequency(MHz)`
 W = 0.98262, p-value = 4.872e-06
 ```
 
-Kết quả shapiro.test cho thấy dữ liệu có p-value = 4.872e-06 << 0.05 nên ta bác bỏ giả thiết H0, tức là dữ liệu tuân theo phân phối chuẩn.
+Kết quả shapiro.test cho thấy dữ liệu có p-value = 4.872e-06 << 0.05 nên ta bác bỏ giả thiết H0, tức là dữ liệu không tuân theo phân phối chuẩn.
 
 #### b) Kiểm định tính đồng nhất về phương sai
 
