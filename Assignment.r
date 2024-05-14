@@ -4,6 +4,8 @@ library(graphics)
 library(dplyr)
 library(tidyr)
 library(zoo)
+library(nortest)
+library(car)
 
 # Necessary helper function
 #-------------------------------
@@ -178,5 +180,48 @@ pairs(dataCPU$`Recommended_Customer_Price(USD)` ~ dataCPU$`Max_Memory_Size(GB)`,
 pairs(dataCPU$`Recommended_Customer_Price(USD)` ~ dataCPU$`Cache_Size(MB)`, col = "yellow", pch = 20, labels = c("Recommend Customer Price", "Cache Size"), 
       main = "Correlation chart between Recommended Price and Cache Size")
 
+#-----------ANOVA---------------
+
+# Test 1: Normality of residuals for Mobile CPUs
+mobileCPU <- subset(dataCPU, dataCPU$Vertical_Segment == "Mobile")
+qqnorm(mobileCPU$`Processor_Base_Frequency(MHz)`)
+qqline(mobileCPU$`Processor_Base_Frequency(MHz)`)
+print(shapiro.test(mobileCPU$`Processor_Base_Frequency(MHz)`))
+
+# Test 1: Normality of residuals for Desktop CPUs
+desktopCPU <- subset(dataCPU, dataCPU$Vertical_Segment == "Desktop")
+qqnorm(desktopCPU$`Processor_Base_Frequency(MHz)`)
+qqline(desktopCPU$`Processor_Base_Frequency(MHz)`)
+print(shapiro.test(desktopCPU$`Processor_Base_Frequency(MHz)`))
+
+# Test 1: Normality of residuals for Server CPUs
+serverCPU <- subset(dataCPU, dataCPU$Vertical_Segment == "Server")
+qqnorm(serverCPU$`Processor_Base_Frequency(MHz)`)
+qqline(serverCPU$`Processor_Base_Frequency(MHz)`)
+print(shapiro.test(serverCPU$`Processor_Base_Frequency(MHz)`))
+
+# Test 1: Normality of residuals for Embedded CPUs
+embeddedCPU <- subset(dataCPU, dataCPU$Vertical_Segment == "Embedded")
+qqnorm(embeddedCPU$`Processor_Base_Frequency(MHz)`)
+qqline(embeddedCPU$`Processor_Base_Frequency(MHz)`)
+print(shapiro.test(embeddedCPU$`Processor_Base_Frequency(MHz)`))
+
+# Test 2: Homogeneity of variances
+levent_test <- leveneTest(dataCPU$`Processor_Base_Frequency(MHz)` ~ as.factor(dataCPU$Vertical_Segment))
+print(levent_test)
+
+anova_model <- aov(`Processor_Base_Frequency(MHz)` ~ Vertical_Segment, data = dataCPU)
+summary(anova_model)
+
+TukeyHSD(anova_model)
+plot(TukeyHSD(anova_model))
+
+#---Linear Regression-----------
+
+linear_model<-lm(dataNumeric$`Recommended_Customer_Price(USD)` ~ dataNumeric$`nb_of_Cores` + dataNumeric$`nb_of_Threads` + dataNumeric$`Cache_Size(MB)`)
+summary(linear_model)
+
+par(mfrow=c(2, 2))
+plot(linear_model)
 
 #-------------------------------
