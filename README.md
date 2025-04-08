@@ -1,0 +1,1 @@
+Đây là project bài tập lớn của môn học Xác suất thống kê học kỳ 232. Bài tập lớn này chủ yếu khảo sát các nhân tố ảnh hưởng đến sự phát triển và giá thành của CPU thông qua file dữ liệu Intel_CPUs.csv, sử dụng các mô hình hồi quy, kiểm định để kiểm tra phân phối của dữ liệu cũng như dự đoán giá thành của CPU trong tương lai.
